@@ -1,0 +1,70 @@
+backend:
+  restart: always
+  build: backend
+  volumes:
+    - ./backend:/app:z
+  links:
+    - postgres:postgres
+    - redis:redis
+  env_file:
+    - ./.docker/env
+  expose:
+    - "8000"
+
+  command: sh -c 'sh runserver.sh'
+
+frontend:
+  build: ./frontend
+  links:
+    - backend:backend
+  expose:
+    - "8080"
+  restart: always
+  command: sh -c 'nodemon server.js'
+
+nginx:
+  build: ./.docker/nginx/
+  ports:
+    - "8000:80"
+  links:
+    - backend:backend
+    - frontend:frontend
+
+celery:
+  restart: always
+  build: backend
+  volumes:
+    - ./backend:/app:z
+  env_file:
+    - ./.docker/env
+  command: celery -A backend worker -l info -B
+  links:
+    - postgres:postgres
+    - redis:redis
+
+postgres:
+  restart: always
+  image: postgres:latest
+  volumes_from:
+    - data
+  volumes:
+    - ./.docker/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:z
+  env_file:
+    - ./.docker/env
+  expose:
+    - "5432"
+  environment:
+    - POSTGRES_HOST_AUTH_METHOD=trust
+
+redis:
+  restart: always
+  image: redis:latest
+  expose:
+    - "6379"
+
+data:
+  restart: always
+  image: alpine
+  volumes:
+    - /var/lib/postgresql
+  command: "true"
