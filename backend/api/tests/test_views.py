@@ -1,15 +1,19 @@
-import os
 import json
+import os
+
 import requests_mock
+from django.conf import settings
 from rest_framework.test import APITestCase
 
 from movies.ghibli import Ghibli
 from movies.models import Character, Movie
-from django.conf import settings
 
 
 class MovieViewTest(APITestCase):
-    def get_fixture(self, filename: str):
+    def get_fixture(self, filename: str) -> None:
+        """
+        get fixture for mock test
+        """
         f = os.path.join(
             settings.BASE_DIR.parent, "movies", "tests", "fixtures", filename
         )
@@ -17,7 +21,10 @@ class MovieViewTest(APITestCase):
             data = json.load(json_file)
             return data
 
-    def test_movie_endpoint(self):
+    def test_movie_endpoint(self) -> None:
+        """
+        Test Movie Endpoint
+        """
         with requests_mock.Mocker() as mocker:
             ghibli = Ghibli()
             mocker.register_uri(

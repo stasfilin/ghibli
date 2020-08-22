@@ -1,4 +1,5 @@
 import uuid
+
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
@@ -10,7 +11,7 @@ class MovieModel(TestCase):
     Test Case for Movie Model
     """
 
-    def test_create_movie_with_valid_data(self):
+    def test_create_movie_with_valid_data(self) -> None:
         """
         Test Movie for creating new movie with valid data
         """
@@ -28,7 +29,7 @@ class MovieModel(TestCase):
         self.assertEqual(movie.id, data.get("id"))
         self.assertEqual(movie.title, data.get("title"))
 
-    def test_create_movie_with_invalid_data(self):
+    def test_create_movie_with_invalid_data(self) -> None:
         """
         Test Movie for creating new movie with invalid data
         """
@@ -51,7 +52,7 @@ class CharacterModel(TestCase):
     Test Case for Character Model
     """
 
-    def test_create_movie_with_valid_data(self):
+    def test_create_movie_with_valid_data(self) -> None:
         """
         Test Character for creating new people with valid data
         """
@@ -62,7 +63,7 @@ class CharacterModel(TestCase):
         self.assertEqual(movie.id, data.get("id"))
         self.assertEqual(movie.name, data.get("name"))
 
-    def test_create_movie_with_invalid_data(self):
+    def test_create_movie_with_invalid_data(self) -> None:
         """
         Test Character for creating new people with invalid data
         """

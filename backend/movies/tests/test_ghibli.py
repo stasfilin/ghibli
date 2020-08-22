@@ -1,8 +1,10 @@
-import os
 import json
+import os
+
 import requests_mock
 from django.conf import settings
 from django.test import TestCase
+
 from movies.ghibli import Ghibli
 from movies.models import Movie, Character
 
@@ -12,7 +14,10 @@ class GhibliTest(TestCase):
     Test Case for Ghibli Parser
     """
 
-    def get_fixture(self, filename: str):
+    def get_fixture(self, filename: str) -> list:
+        """
+        get fixture for mock test
+        """
         f = os.path.join(
             settings.BASE_DIR.parent, "movies", "tests", "fixtures", filename
         )
@@ -20,7 +25,10 @@ class GhibliTest(TestCase):
             data = json.load(json_file)
             return data
 
-    def test_get_films(self):
+    def test_get_films(self) -> None:
+        """
+        Test get_films function
+        """
         with requests_mock.Mocker() as mocker:
             ghibli = Ghibli()
             mocker.register_uri(
@@ -28,7 +36,10 @@ class GhibliTest(TestCase):
             )
             self.assertEqual(len(ghibli.get_films()), 20)
 
-    def test_get_people(self):
+    def test_get_people(self) -> None:
+        """
+        Test get_people function
+        """
         with requests_mock.Mocker() as mocker:
             ghibli = Ghibli()
             mocker.register_uri(
@@ -36,7 +47,10 @@ class GhibliTest(TestCase):
             )
             self.assertEqual(len(ghibli.get_people()), 43)
 
-    def test_sync(self):
+    def test_sync(self) -> None:
+        """
+        Test sync function
+        """
         with requests_mock.Mocker() as mocker:
             ghibli = Ghibli()
             mocker.register_uri(

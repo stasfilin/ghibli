@@ -1,16 +1,23 @@
 import requests
+from django.db import IntegrityError
 
 from movies.exceptions import EndpointException, FetchException
 from movies.log import logger
 from movies.models import Movie, Character
-from django.db import IntegrityError
 
 
 class Ghibli(requests.Session):
+    """
+    Ghibli Class
+    """
+
     base_url = "https://ghibliapi.herokuapp.com/"
     endpoints = ["films", "people"]
 
-    def fetch(self, endpoint):
+    def fetch(self, endpoint: str) -> list:
+        """
+        Fetch data, check if endpoint allowed
+        """
         if endpoint not in self.endpoints:
             raise EndpointException()
         response = self.get(self.base_url + endpoint)
@@ -19,14 +26,23 @@ class Ghibli(requests.Session):
             return response.json()
         raise FetchException()
 
-    def get_films(self):
+    def get_films(self) -> list:
+        """
+        Get Films from Ghibli
+        """
         return self.fetch("films")
 
-    def get_people(self):
+    def get_people(self) -> list:
+        """
+        Get People from Ghibli
+        """
         return self.fetch("people")
 
-    def sync(self):
-        logger.info('Sync Ghibli data')
+    def sync(self) -> None:
+        """
+        Sync data from Ghibli and push to Database
+        """
+        logger.info("Sync Ghibli data")
         films = self.get_films()
 
         movies_objects = {}
