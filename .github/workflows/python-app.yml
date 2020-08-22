@@ -22,9 +22,9 @@ jobs:
         python-version: 3.8
     - name: Install dependencies
       run: |
+        cd backend
         python -m pip install --upgrade pip pipenv
         pipenv install --dev --system --deploy
     - name: Test
       run: |
-        cd backend
         python manage.py test
