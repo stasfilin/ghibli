@@ -27,4 +27,5 @@ jobs:
         pipenv install --dev --system --deploy
     - name: Test
       run: |
+        cd backend
         python manage.py test
