@@ -2,8 +2,8 @@ import requests
 from django.db import IntegrityError
 
 from movies.exceptions import EndpointException, FetchException
-from movies.log import logger
 from movies.models import Movie, Character
+from utils.log import logger
 
 
 class Ghibli(requests.Session):

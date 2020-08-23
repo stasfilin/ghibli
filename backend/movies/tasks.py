@@ -2,7 +2,7 @@ from celery.schedules import crontab
 from celery.task import periodic_task
 
 from movies.ghibli import Ghibli
-from movies.log import logger
+from utils.log import logger
 
 
 @periodic_task(run_every=(crontab(minute="*/1")), name="sync_data", ignore_result=True)

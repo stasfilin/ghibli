@@ -1,26 +1,12 @@
-import json
-import os
-
 import requests_mock
-from django.conf import settings
 from rest_framework.test import APITestCase
 
 from movies.ghibli import Ghibli
 from movies.models import Character, Movie
+from utils.tests.testcase import FixtureMixin
 
 
-class MovieViewTest(APITestCase):
-    def get_fixture(self, filename: str) -> None:
-        """
-        get fixture for mock test
-        """
-        f = os.path.join(
-            settings.BASE_DIR.parent, "movies", "tests", "fixtures", filename
-        )
-        with open(f) as json_file:
-            data = json.load(json_file)
-            return data
-
+class MovieViewTest(APITestCase, FixtureMixin):
     def test_movie_endpoint(self) -> None:
         """
         Test Movie Endpoint

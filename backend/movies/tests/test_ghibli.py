@@ -1,29 +1,15 @@
-import json
-import os
-
 import requests_mock
-from django.conf import settings
 from django.test import TestCase
 
 from movies.ghibli import Ghibli
 from movies.models import Movie, Character
+from utils.tests.testcase import FixtureMixin
 
 
-class GhibliTest(TestCase):
+class GhibliTest(TestCase, FixtureMixin):
     """
     Test Case for Ghibli Parser
     """
-
-    def get_fixture(self, filename: str) -> list:
-        """
-        get fixture for mock test
-        """
-        f = os.path.join(
-            settings.BASE_DIR.parent, "movies", "tests", "fixtures", filename
-        )
-        with open(f) as json_file:
-            data = json.load(json_file)
-            return data
 
     def test_get_films(self) -> None:
         """
